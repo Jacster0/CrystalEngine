@@ -1,0 +1,9 @@
+target_sources(Crystal
+        PRIVATE
+        ConsoleSink.cpp
+        PUBLIC
+        Logger.h
+        LogLevel.h
+        sink.h
+        ConsoleSink.h
+)
