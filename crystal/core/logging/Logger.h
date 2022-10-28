@@ -9,6 +9,7 @@
 #include <mutex>
 #include "sink.h"
 #include "fmt/format.h"
+#include "../utils/Singleton.h"
 
 namespace crystal {
     namespace detail {
@@ -28,13 +29,8 @@ namespace crystal {
         };
     }
 
-    class Logger {
+    class Logger : public Singleton<Logger> {
     public:
-        static Logger& get() noexcept {
-            static Logger logger;
-            return logger;
-        }
-
         static constexpr auto endline() noexcept { return std::endl<char, std::char_traits<char>>; }
         static constexpr auto newline() noexcept { return "\n"; }
 
@@ -98,9 +94,6 @@ namespace crystal {
         }
 
     private:
-        Logger() = default;
-        ~Logger() = default;
-
         mutable std::mutex m_logging_mutex;
         std::vector<std::unique_ptr<ISink>> m_sinks;
     };

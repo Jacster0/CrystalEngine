@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include <array>
 #include <iostream>
-
 using namespace crystal;
 
 static struct platform_info {
