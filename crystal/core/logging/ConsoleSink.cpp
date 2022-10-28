@@ -28,4 +28,5 @@ void ConsoleSink::emit(std::string_view msg, LogLevel lvl, const std::source_loc
     }
 
     fmt::print("{} {} {}", m_prefix, msgPrefix, msg);
+    std::cout.flush();
 }
