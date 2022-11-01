@@ -1,5 +1,10 @@
 #include "platform.h"
+#include "core/eventsystem/EventSystem.h"
+#include "core/logging/Logger.h"
+#include "core/input/Keyboard.h"
 #include <xcb/xcb.h>
+#include <X11/keysym.h>
+#include <X11/XKBlib.h>
 #include <X11/Xlib.h>
 #include <X11/Xlib-xcb.h>
 #include <stdexcept>
@@ -66,7 +71,12 @@ bool platform::process_messages() {
     xcb_client_message_event_t* cm;
 
     while ((event = xcb_poll_for_event(platformInfo.connection))) {
-        switch (event->response_type & ~0x80) { }
+        switch (event->response_type & ~0x80) {
+            case XCB_KEY_PRESS:
+            case XCB_KEY_RELEASE: {
+                on_key_press(event);
+            }
+        }
         free(event);
     }
 
@@ -125,4 +135,15 @@ void platform::set_notifications() const noexcept {
             32,
             1,
             &platformInfo.wm_delete_win);
+}
+
+void platform::on_key_press(xcb_generic_event_t* event) {
+    auto keyPressEvent = reinterpret_cast<xcb_key_press_event_t*>(event);
+
+    bool pressed = event->response_type == XCB_KEY_PRESS;
+    auto keyCode = keyPressEvent->detail;
+
+    auto key_sym = XkbKeycodeToKeysym(platformInfo.display, static_cast<KeyCode>(keyCode),0, 0);
+
+    EventSystem::notify<KeyboardInfo>();
 }

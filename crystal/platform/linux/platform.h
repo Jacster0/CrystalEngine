@@ -4,6 +4,7 @@
 #include <utility>
 #include <array>
 #include <xcb/xcb.h>
+#include "core/input/Keyboard.h"
 
 namespace crystal {
     struct application_create_info {
@@ -18,8 +19,11 @@ namespace crystal {
         void create_main_window(application_create_info createInfo);
         bool process_messages();
     private:
+        Keyboard kbd;
         [[nodiscard]] std::pair<uint32_t, std::array<uint32_t,2>> get_event_info() const noexcept;
         void set_notifications() const noexcept;
+
+        void on_key_press(xcb_generic_event_t* event);
     };
 }
 

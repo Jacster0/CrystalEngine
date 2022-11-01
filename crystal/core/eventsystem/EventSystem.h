@@ -16,7 +16,6 @@ namespace crystal {
     public:
         template<class Event, class... Args>
         static void notify(Args&&... args)
-        requires std::constructible_from<Event, decltype(args)...>
         {
             Event event {std::forward<Args>(args)...};
             get().dispatch(&event, typeid(Event));
@@ -24,7 +23,6 @@ namespace crystal {
 
         template<class Event, class... Args>
         static void notify_async(Args&&... args)
-        requires std::constructible_from<Event, decltype(args)...>
         {
             get().enqueue_async_event(Event {std::forward<Args>(args)...});
         }

@@ -1,5 +1,6 @@
 #pragma once
 #include "EventSystem.h"
+#include "core/input/Keyboard.h"
 
 namespace crystal {
 
@@ -11,7 +12,7 @@ namespace crystal {
         struct EventHandlerTraits<T(U::*)(V)> {
             using ReturnType = T;
             using Class = U;
-            using Event = std::remove_cvref<V>;
+            using Event = std::remove_cvref_t<V>;
         };
     }
 
@@ -29,21 +30,21 @@ namespace crystal {
         }
 
         template<auto... Handlers>
-        void register_event_handlers() const noexcept {
+        void register_event_handlers() noexcept {
             (register_event_handler<Handlers>(), ...);
         }
 
         template<auto Handler>
-        void register_event_handler() const noexcept {
-            auto& type = typeid(details::EventHandlerTraits<decltype(Handler)>::Event);
+        void register_event_handler() noexcept {
+            auto& type = typeid(typename details::EventHandlerTraits<decltype(Handler)>::Event);
             auto handler = dispatch<Handler>;
 
             EventSystem::get().add_handler(type, handler, this);
         }
 
         template<auto Handler>
-        void unregister_event_handler() const noexcept {
-            auto& type = typeid(details::EventHandlerTraits<decltype(Handler)>::Event);
+        void unregister_event_handler() noexcept {
+            auto& type = typeid(typename details::EventHandlerTraits<decltype(Handler)>::Event);
             auto handler = dispatch<Handler>;
 
             EventSystem::get().remove_handler(type, handler, this);
@@ -60,21 +61,21 @@ namespace crystal {
 
     private:
         template<auto Handler>
-        static constexpr bool dispatch(EventListener& listener, void* eventData) noexcept {
+        static bool dispatch(EventListener& listener, void* eventData) noexcept {
             using handler = details::EventHandlerTraits<decltype(Handler)>;
 
-            auto& event = *static_cast<handler::Event*>(eventData);
-            auto& object = static_cast<handler::Class&>(listener);
+            auto& event = *static_cast<typename handler::Event*>(eventData);
+            auto& object = static_cast<typename handler::Class&>(listener);
 
             if constexpr (std::same_as<typename handler::ReturnType, void>) {
-                std::invoke(Handler, object, event);
+                (object.*Handler)(event);
                 return false;
             }
             else if constexpr (std::same_as<typename handler::ReturnType, bool>) {
-                return std::invoke(Handler, object, event);
+                return (object.*Handler)(event);
             }
             else {
-                static_assert(false, "An event handler must return void or bool.");
+                static_assert(!sizeof(Handler), "An event handler must return void or bool.");
             }
         }
     };

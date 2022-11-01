@@ -27,6 +27,9 @@ FetchContent_MakeAvailable(fmt)
 FetchContent_MakeAvailable(Range-v3)
 FetchContent_MakeAvailable(concurrentqueue)
 
+target_include_directories(Crystal PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}"
+        )
 target_link_libraries(Crystal
         concurrentqueue
         fmt::fmt
