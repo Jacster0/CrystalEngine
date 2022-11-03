@@ -16,6 +16,8 @@ if(LINUX)
     link_libraries(${X11_LIBRARIES})
     include_directories(${X11_INCLUDE_DIR})
     include_directories(${X11_xcb_INCLUDE_PATH})
+elseif(WINDOWS)
+    add_compile_definitions(CRYSTAL_PLATFORM_WINDOWS)
 endif()
 
 add_subdirectory(core)
