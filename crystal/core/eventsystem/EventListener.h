@@ -61,7 +61,7 @@ namespace crystal {
 
     private:
         template<auto Handler>
-        static bool dispatch(EventListener& listener, void* eventData) noexcept {
+        static constexpr bool dispatch(EventListener& listener, void* eventData) noexcept {
             using handler = details::EventHandlerTraits<decltype(Handler)>;
 
             auto& event = *static_cast<typename handler::Event*>(eventData);
