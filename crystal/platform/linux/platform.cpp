@@ -2,6 +2,7 @@
 #include "core/eventsystem/EventSystem.h"
 #include "core/logging/Logger.h"
 #include "core/input/Keyboard.h"
+#include "Keycodes.h"
 #include <xcb/xcb.h>
 #include <X11/keysym.h>
 #include <X11/XKBlib.h>
@@ -9,7 +10,7 @@
 #include <X11/Xlib-xcb.h>
 #include <stdexcept>
 #include <array>
-#include <iostream>
+
 using namespace crystal;
 
 static struct platform_info {
@@ -62,7 +63,7 @@ void platform::create_main_window(application_create_info createInfo) {
     auto stream_result = xcb_flush(platformInfo.connection);
 
     if (stream_result <= 0) {
-        std::cout << "An error occurred when flushing the stream " << stream_result;
+        Logger::Error("An error occurred when flushing the stream. Result: {}", stream_result);
     }
 }
 
@@ -74,7 +75,7 @@ bool platform::process_messages() {
         switch (event->response_type & ~0x80) {
             case XCB_KEY_PRESS:
             case XCB_KEY_RELEASE: {
-                on_key_press(event);
+                on_key_notify(event);
             }
         }
         free(event);
@@ -137,13 +138,16 @@ void platform::set_notifications() const noexcept {
             &platformInfo.wm_delete_win);
 }
 
-void platform::on_key_press(xcb_generic_event_t* event) {
+void platform::on_key_notify(xcb_generic_event_t* event) noexcept {
     auto keyPressEvent = reinterpret_cast<xcb_key_press_event_t*>(event);
 
-    bool pressed = event->response_type == XCB_KEY_PRESS;
-    auto keyCode = keyPressEvent->detail;
+    auto keySym = XkbKeycodeToKeysym(platformInfo.display, static_cast<::KeyCode>(keyPressEvent->detail),0, 0);
+    auto keyCode = static_cast<crystal::KeyCode>(keySym);
 
-    auto key_sym = XkbKeycodeToKeysym(platformInfo.display, static_cast<KeyCode>(keyCode),0, 0);
-
-    EventSystem::notify<KeyboardInfo>();
+    if(event->response_type == XCB_KEY_PRESS) {
+        EventSystem::notify<KeyDownEvent>(keyCode);
+    }
+    else {
+        EventSystem::notify<KeyUpEvent>(keyCode);
+    }
 }

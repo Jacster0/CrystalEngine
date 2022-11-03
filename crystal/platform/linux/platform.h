@@ -23,7 +23,7 @@ namespace crystal {
         [[nodiscard]] std::pair<uint32_t, std::array<uint32_t,2>> get_event_info() const noexcept;
         void set_notifications() const noexcept;
 
-        void on_key_press(xcb_generic_event_t* event);
+        void on_key_notify(xcb_generic_event_t* event) noexcept;
     };
 }
 
