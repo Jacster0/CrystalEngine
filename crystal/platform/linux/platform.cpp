@@ -67,7 +67,7 @@ void platform::create_main_window(application_create_info createInfo) {
     }
 }
 
-bool platform::process_messages() {
+std::optional<int> platform::process_messages() {
     xcb_generic_event_t* event;
     xcb_client_message_event_t* cm;
 
@@ -77,11 +77,17 @@ bool platform::process_messages() {
             case XCB_KEY_RELEASE: {
                 on_key_notify(event);
             }
+            case XCB_CLIENT_MESSAGE:
+                auto msg = reinterpret_cast<xcb_client_message_event_t*>(event);
+
+                if(msg->data.data32[0] == platformInfo.wm_delete_win) {
+                    return 1;
+                }
         }
         free(event);
     }
 
-    return true;
+    return {};
 }
 
 std::pair<uint32_t, std::array<uint32_t, 2>> platform::get_event_info() const noexcept {

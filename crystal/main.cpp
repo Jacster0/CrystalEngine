@@ -1,4 +1,4 @@
-#include "platform/linux/platform.h"
+#include "platform/platform.h"
 #include "core/logging/Logger.h"
 #include "core/logging/ConsoleSink.h"
 
@@ -9,8 +9,12 @@ int main() {
     Logger::Info("{} !!! {}", "Hello", "World");
 
     platform.create_main_window({100,100, 750, 512});
+
     while(true) {
-        platform.process_messages();
+        if(const auto code = platform.process_messages()) {
+            Logger::Info("Exit code: {}", code.value());
+            break;
+        }
     }
 
     crystal::Logger::remove_sink<ConsoleSink>();

@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <utility>
 #include <array>
+#include <optional>
 #include <xcb/xcb.h>
 #include "core/input/Keyboard.h"
 
@@ -17,7 +18,7 @@ namespace crystal {
     class platform {
     public:
         void create_main_window(application_create_info createInfo);
-        bool process_messages();
+        std::optional<int> process_messages();
     private:
         Keyboard kbd;
         [[nodiscard]] std::pair<uint32_t, std::array<uint32_t,2>> get_event_info() const noexcept;
