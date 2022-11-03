@@ -52,7 +52,7 @@ namespace crystal {
         void Log(LogLevel lvl, const detail::log_fmt& fmt, auto&&... args) const noexcept {
             std::scoped_lock lock(m_logging_mutex);
 
-            const std::string message = fmt::format("{}", fmt::vformat(fmt.msg, fmt::make_format_args(std::forward<decltype(args)>(args)...)));
+            const std::string message = fmt::format("{}{}", fmt::vformat(fmt.msg, fmt::make_format_args(std::forward<decltype(args)>(args)...)), Logger::newline());
 
             for(const auto& sink : m_sinks) {
                 sink->emit(message, lvl);
