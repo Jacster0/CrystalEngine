@@ -3,6 +3,7 @@
 #include "core/logging/Logger.h"
 #include "platform/KeyCodes.h"
 #include "core/lib/enum_utils.h"
+#include "core/lib/atomic_bitset.h"
 
 namespace crystal {
     struct KeyEvent {
@@ -12,17 +13,20 @@ namespace crystal {
     struct KeyDownEvent : KeyEvent {};
     struct KeyUpEvent : KeyEvent {};
 
-    class Keyboard : public EventListener {
+    class Keyboard : public Singleton<Keyboard>, public EventListener {
     public:
+        static auto is_key_down(KeyCode keyCode) noexcept {
+            return get().m_keyStates[static_cast<size_t>(keyCode)];
+        }
+
         Keyboard() {
             register_event_handlers<&Keyboard::on_key_down, &Keyboard::on_key_up>();
         }
     private:
-        void on_key_down(KeyDownEvent event) {
-            Logger::Info("{} {}", "on_key_down code: ", static_cast<int>(event.keyCode));
-        }
-        void on_key_up(KeyUpEvent event) {
-            Logger::Info("{} {}", "on_key_up code: ", static_cast<int>(event.keyCode));
-        }
+        void on_key_down(KeyDownEvent event);
+        void on_key_up(KeyUpEvent event);
+
+        static constexpr auto m_numKeys{256u};
+        crylib::atomic_bitset<m_numKeys> m_keyStates;
     };
 }

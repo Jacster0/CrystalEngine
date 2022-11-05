@@ -144,16 +144,263 @@ void platform::set_notifications() const noexcept {
             &platformInfo.wm_delete_win);
 }
 
+crystal::KeyCode translate_keycode(uint32_t keySym) {
+    switch (keySym) {
+        case XK_BackSpace:
+            return crystal::KeyCode::Back;
+        case XK_Return:
+            return crystal::KeyCode::Enter;
+        case XK_Tab:
+            return crystal::KeyCode::Tab;
+        case XK_Pause:
+            return crystal::KeyCode::Pause;
+        case XK_Caps_Lock:
+            return crystal::KeyCode::CapsLock;
+        case XK_Escape:
+            return crystal::KeyCode::Escape;
+        case XK_space:
+            return crystal::KeyCode::Space;
+        case XK_End:
+            return crystal::KeyCode::End;
+        case XK_Home:
+            return crystal::KeyCode::Home;
+        case XK_Left:
+            return crystal::KeyCode::Left;
+        case XK_Up:
+            return crystal::KeyCode::Up;
+        case XK_Right:
+            return crystal::KeyCode::Right;
+        case XK_Down:
+            return crystal::KeyCode::Down;
+        case XK_Select:
+            return crystal::KeyCode::Select;
+        case XK_Print:
+            return crystal::KeyCode::Print;
+        case XK_Execute:
+            return crystal::KeyCode::Execute;
+        case XK_Insert:
+            return crystal::KeyCode::Insert;
+        case XK_Delete:
+            return crystal::KeyCode::Delete;
+        case XK_Help:
+            return crystal::KeyCode::Help;
+        case XK_KP_0:
+            return crystal::KeyCode::NumPad0;
+        case XK_KP_1:
+            return crystal::KeyCode::NumPad1;
+        case XK_KP_2:
+            return crystal::KeyCode::NumPad2;
+        case XK_KP_3:
+            return crystal::KeyCode::NumPad3;
+        case XK_KP_4:
+            return crystal::KeyCode::NumPad4;
+        case XK_KP_5:
+            return crystal::KeyCode::NumPad5;
+        case XK_KP_6:
+            return crystal::KeyCode::NumPad6;
+        case XK_KP_7:
+            return crystal::KeyCode::NumPad7;
+        case XK_KP_8:
+            return crystal::KeyCode::NumPad8;
+        case XK_KP_9:
+            return crystal::KeyCode::NumPad9;
+        case XK_KP_Multiply:
+            return crystal::KeyCode::Multiply;
+        case XK_KP_Add:
+            return crystal::KeyCode::Add;
+        case XK_KP_Separator:
+            return crystal::KeyCode::Separator;
+        case XK_KP_Subtract:
+            return crystal::KeyCode::Subtract;
+        case XK_KP_Decimal:
+            return crystal::KeyCode::Decimal;
+        case XK_KP_Divide:
+            return crystal::KeyCode::Divide;
+        case XK_F1:
+            return crystal::KeyCode::F1;
+        case XK_F2:
+            return crystal::KeyCode::F2;
+        case XK_F3:
+            return crystal::KeyCode::F3;
+        case XK_F4:
+            return crystal::KeyCode::F4;
+        case XK_F5:
+            return crystal::KeyCode::F5;
+        case XK_F6:
+            return crystal::KeyCode::F6;
+        case XK_F7:
+            return crystal::KeyCode::F7;
+        case XK_F8:
+            return crystal::KeyCode::F8;
+        case XK_F9:
+            return crystal::KeyCode::F9;
+        case XK_F10:
+            return crystal::KeyCode::F10;
+        case XK_F11:
+            return crystal::KeyCode::F11;
+        case XK_F12:
+            return crystal::KeyCode::F12;
+        case XK_F13:
+            return crystal::KeyCode::F13;
+        case XK_F14:
+            return crystal::KeyCode::F14;
+        case XK_F15:
+            return crystal::KeyCode::F15;
+        case XK_F16:
+            return crystal::KeyCode::F16;
+        case XK_F17:
+            return crystal::KeyCode::F17;
+        case XK_F18:
+            return crystal::KeyCode::F18;
+        case XK_F19:
+            return crystal::KeyCode::F19;
+        case XK_F20:
+            return crystal::KeyCode::F20;
+        case XK_F21:
+            return crystal::KeyCode::F21;
+        case XK_F22:
+            return crystal::KeyCode::F22;
+        case XK_F23:
+            return crystal::KeyCode::F23;
+        case XK_F24:
+            return crystal::KeyCode::F24;
+        case XK_Num_Lock:
+            return crystal::KeyCode::NumLock;
+        case XK_Scroll_Lock:
+            return crystal::KeyCode::Scroll;
+        case XK_Shift_L:
+            return crystal::KeyCode::LShift;
+        case XK_Shift_R:
+            return crystal::KeyCode::RShift;
+        case XK_Control_L:
+            return crystal::KeyCode::LControl;
+        case XK_Control_R:
+            return crystal::KeyCode::RControl;
+        case XK_Alt_L:
+            return crystal::KeyCode::Alt;
+        case XK_semicolon:
+            return crystal::KeyCode::OemSemicolon;
+        case XK_plus:
+            return crystal::KeyCode::OemPlus;
+        case XK_minus:
+            return crystal::KeyCode::OemMinus;
+        case XK_comma:
+            return crystal::KeyCode::OemComma;
+        case XK_period:
+            return crystal::KeyCode::OemPeriod;
+        case XK_0:
+            return crystal::KeyCode::D0;
+        case XK_1:
+            return crystal::KeyCode::D1;
+        case XK_2:
+            return crystal::KeyCode::D2;
+        case XK_3:
+            return crystal::KeyCode::D3;
+        case XK_4:
+            return crystal::KeyCode::D4;
+        case XK_5:
+            return crystal::KeyCode::D5;
+        case XK_6:
+            return crystal::KeyCode::D6;
+        case XK_7:
+            return crystal::KeyCode::D7;
+        case XK_8:
+            return crystal::KeyCode::D8;
+        case XK_9:
+            return crystal::KeyCode::D9;
+        case XK_a:
+        case XK_A:
+            return crystal::KeyCode::A;
+        case XK_b:
+        case XK_B:
+            return crystal::KeyCode::B;
+        case XK_c:
+        case XK_C:
+            return crystal::KeyCode::C;
+        case XK_d:
+        case XK_D:
+            return crystal::KeyCode::D;
+        case XK_e:
+        case XK_E:
+            return crystal::KeyCode::E;
+        case XK_f:
+        case XK_F:
+            return crystal::KeyCode::F;
+        case XK_g:
+        case XK_G:
+            return crystal::KeyCode::G;
+        case XK_h:
+        case XK_H:
+            return crystal::KeyCode::H;
+        case XK_i:
+        case XK_I:
+            return crystal::KeyCode::I;
+        case XK_j:
+        case XK_J:
+            return crystal::KeyCode::J;
+        case XK_k:
+        case XK_K:
+            return crystal::KeyCode::K;
+        case XK_l:
+        case XK_L:
+            return crystal::KeyCode::L;
+        case XK_m:
+        case XK_M:
+            return crystal::KeyCode::M;
+        case XK_n:
+        case XK_N:
+            return crystal::KeyCode::N;
+        case XK_o:
+        case XK_O:
+            return crystal::KeyCode::O;
+        case XK_p:
+        case XK_P:
+            return crystal::KeyCode::P;
+        case XK_q:
+        case XK_Q:
+            return crystal::KeyCode::Q;
+        case XK_r:
+        case XK_R:
+            return crystal::KeyCode::R;
+        case XK_s:
+        case XK_S:
+            return crystal::KeyCode::S;
+        case XK_t:
+        case XK_T:
+            return crystal::KeyCode::T;
+        case XK_u:
+        case XK_U:
+            return crystal::KeyCode::U;
+        case XK_v:
+        case XK_V:
+            return crystal::KeyCode::V;
+        case XK_w:
+        case XK_W:
+            return crystal::KeyCode::W;
+        case XK_x:
+        case XK_X:
+            return crystal::KeyCode::X;
+        case XK_y:
+        case XK_Y:
+            return crystal::KeyCode::Y;
+        case XK_z:
+        case XK_Z:
+            return crystal::KeyCode::Z;
+    }
+}
+
 void platform::on_key_notify(xcb_generic_event_t* event) noexcept {
     auto keyPressEvent = reinterpret_cast<xcb_key_press_event_t*>(event);
 
     auto keySym = XkbKeycodeToKeysym(platformInfo.display, static_cast<::KeyCode>(keyPressEvent->detail),0, 0);
-    auto keyCode = static_cast<crystal::KeyCode>(keySym);
+    auto keyCode = translate_keycode(keySym);
 
     if(event->response_type == XCB_KEY_PRESS) {
         EventSystem::notify<KeyDownEvent>(keyCode);
     }
     else {
         EventSystem::notify<KeyUpEvent>(keyCode);
-    }
+    } 
 }
+
+

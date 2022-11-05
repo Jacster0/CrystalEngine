@@ -20,7 +20,7 @@ namespace crystal {
         void create_main_window(application_create_info createInfo);
         std::optional<int> process_messages();
     private:
-        Keyboard kbd;
+        Keyboard m_kbd;
         [[nodiscard]] std::pair<uint32_t, std::array<uint32_t,2>> get_event_info() const noexcept;
         void set_notifications() const noexcept;
 

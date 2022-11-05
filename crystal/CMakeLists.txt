@@ -8,7 +8,7 @@ endif()
 
 if(LINUX)
     add_compile_definitions(CRYSTAL_PLATFORM_LINUX)
-    SET(CRYSTAL_ADDITIONAL_LINKER_FLAGS "-lxcb -lX11 -lX11-xcb")
+    SET(CRYSTAL_ADDITIONAL_LINKER_FLAGS "-lxcb -lX11 -lX11-xcb -latomic")
 
     add_subdirectory(platform/linux)
 
