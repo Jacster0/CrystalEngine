@@ -6,6 +6,7 @@
 #include <optional>
 #include <xcb/xcb.h>
 #include "core/input/Keyboard.h"
+#include "core/input/Mouse.h"
 
 namespace crystal {
     struct application_create_info {
@@ -21,10 +22,12 @@ namespace crystal {
         std::optional<int> process_messages();
     private:
         Keyboard m_kbd;
+        Mouse m_mouse;
         [[nodiscard]] std::pair<uint32_t, std::array<uint32_t,2>> get_event_info() const noexcept;
         void set_notifications() const noexcept;
 
         void on_key_notify(xcb_generic_event_t* event) noexcept;
+        void on_mouse_notify(xcb_generic_event_t *event) noexcept;
     };
 }
 

@@ -2,7 +2,8 @@
 #include "core/eventsystem/EventSystem.h"
 #include "core/logging/Logger.h"
 #include "core/input/Keyboard.h"
-#include "Keycodes.h"
+#include "core/input/KeyCodes.h"
+#include "core/input/MouseCodes.h"
 #include <xcb/xcb.h>
 #include <X11/keysym.h>
 #include <X11/XKBlib.h>
@@ -74,9 +75,13 @@ std::optional<int> platform::process_messages() {
     while ((event = xcb_poll_for_event(platformInfo.connection))) {
         switch (event->response_type & ~0x80) {
             case XCB_KEY_PRESS:
-            case XCB_KEY_RELEASE: {
+            case XCB_KEY_RELEASE:
                 on_key_notify(event);
-            }
+                break;
+            case XCB_BUTTON_PRESS:
+            case XCB_BUTTON_RELEASE:
+                on_mouse_notify(event);
+                break;
             case XCB_CLIENT_MESSAGE:
                 auto msg = reinterpret_cast<xcb_client_message_event_t*>(event);
 
@@ -385,7 +390,18 @@ crystal::KeyCode translate_keycode(uint32_t keySym) {
             return crystal::KeyCode::Y;
         case XK_z:
         case XK_Z:
-            return crystal::KeyCode::Z;
+            return crystal::KeyCode::Z;;
+    }
+}
+
+crystal::MouseButton translate_mousecode(xcb_button_t btn) {
+    switch (btn) {
+        case XCB_BUTTON_INDEX_1:
+            return MouseButton::Left;
+        case XCB_BUTTON_INDEX_2:
+            return MouseButton::Middle;
+        case XCB_BUTTON_INDEX_3:
+            return MouseButton::Right;
     }
 }
 
@@ -401,6 +417,18 @@ void platform::on_key_notify(xcb_generic_event_t* event) noexcept {
     else {
         EventSystem::notify<KeyUpEvent>(keyCode);
     } 
+}
+
+void platform::on_mouse_notify(xcb_generic_event_t *event) noexcept {
+    auto mouseEvent = reinterpret_cast<xcb_button_press_event_t*>(event);
+    auto buttonPressed = translate_mousecode(mouseEvent->detail);
+
+    if(event->response_type == XCB_BUTTON_PRESS) {
+        EventSystem::notify<MouseDownEvent>(buttonPressed);
+    }
+    else {
+        EventSystem::notify<MouseUpEvent>(buttonPressed);
+    }
 }
 
 

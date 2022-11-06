@@ -1,9 +1,7 @@
 #pragma once
 #include "EventSystem.h"
-#include "core/input/Keyboard.h"
 
 namespace crystal {
-
     namespace details {
         template<class>
         struct EventHandlerTraits;

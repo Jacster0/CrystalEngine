@@ -1,7 +1,7 @@
 #pragma once
 #include "core/eventsystem/EventListener.h"
 #include "core/logging/Logger.h"
-#include "platform/KeyCodes.h"
+#include "KeyCodes.h"
 #include "core/lib/enum_utils.h"
 #include "core/lib/atomic_bitset.h"
 
@@ -15,7 +15,7 @@ namespace crystal {
 
     class Keyboard : public Singleton<Keyboard>, public EventListener {
     public:
-        static auto is_key_down(KeyCode keyCode) noexcept {
+        static auto key_is_pressed(KeyCode keyCode) noexcept {
             return get().m_keyStates[static_cast<size_t>(keyCode)];
         }
 

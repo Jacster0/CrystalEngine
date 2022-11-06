@@ -32,8 +32,6 @@ namespace crystal {
             m_consumerToken(m_events)
         {}
     private:
-
-
         friend class EventListener;
 
         using Callback = bool (*)(class EventListener&, void*);

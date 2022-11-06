@@ -8,7 +8,7 @@ using namespace crystal;
 
 [[noreturn]] void process() {
     while(true) {
-        if(Keyboard::is_key_down(KeyCode::J)) {
+        if(Keyboard::key_is_pressed(KeyCode::J)) {
             Logger::Info("Thread1 report: Key \"J\" was pressed");
         }
     }
@@ -16,7 +16,7 @@ using namespace crystal;
 
 [[noreturn]] void process2() {
     while(true) {
-        if(Keyboard::is_key_down(KeyCode::J)) {
+        if(Keyboard::key_is_pressed(KeyCode::J)) {
             Logger::Info("Thread2 report: Key \"J\" was pressed");
         }
     }
