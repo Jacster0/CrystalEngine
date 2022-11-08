@@ -8,7 +8,7 @@ endif()
 
 if(LINUX)
     add_compile_definitions(CRYSTAL_PLATFORM_LINUX)
-    SET(CRYSTAL_ADDITIONAL_LINKER_FLAGS "-lxcb -lX11 -lX11-xcb -latomic")
+    SET(CRYSTAL_ADDITIONAL_LINKER_FLAGS "-lxcb -lvulkan -lX11 -lX11-xcb -latomic")
 
     add_subdirectory(platform/linux)
 
@@ -38,6 +38,13 @@ FetchContent_Declare(
         GIT_TAG master
 )
 
+FetchContent_Declare(
+        vulkan_headers
+        GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Headers.git
+        GIT_TAG        main
+)
+FetchContent_MakeAvailable(vulkan_headers)
+
 FetchContent_MakeAvailable(fmt)
 FetchContent_MakeAvailable(Range-v3)
 FetchContent_MakeAvailable(concurrentqueue)
@@ -51,4 +58,5 @@ target_link_libraries(Crystal
         concurrentqueue
         fmt::fmt
         range-v3
+        Vulkan-Headers
          )
