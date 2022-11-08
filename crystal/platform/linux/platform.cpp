@@ -82,6 +82,8 @@ std::optional<int> platform::process_messages() {
             case XCB_BUTTON_RELEASE:
                 on_mouse_notify(event);
                 break;
+            case XCB_MOTION_NOTIFY:
+                on_mouse_move(event);
             case XCB_CLIENT_MESSAGE:
                 auto msg = reinterpret_cast<xcb_client_message_event_t*>(event);
 
@@ -429,6 +431,12 @@ void platform::on_mouse_notify(xcb_generic_event_t *event) noexcept {
     else {
         EventSystem::notify<MouseUpEvent>(buttonPressed);
     }
+}
+
+void platform::on_mouse_move(xcb_generic_event_t *event) noexcept {
+    auto mouseEvent = reinterpret_cast<xcb_motion_notify_event_t*>(event);
+
+    EventSystem::notify<MouseMoveEvent>(static_cast<uint32_t>(mouseEvent->event_x), static_cast<uint32_t>(mouseEvent->event_y));
 }
 
 

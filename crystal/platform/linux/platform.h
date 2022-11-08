@@ -28,6 +28,7 @@ namespace crystal {
 
         void on_key_notify(xcb_generic_event_t* event) noexcept;
         void on_mouse_notify(xcb_generic_event_t *event) noexcept;
+        void on_mouse_move(xcb_generic_event_t *event) noexcept;
     };
 }
 

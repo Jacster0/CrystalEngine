@@ -11,3 +11,7 @@ void Mouse::on_mouse_press(MouseDownEvent event) {
 void Mouse::on_mouse_release(MouseUpEvent event) {
     Logger::Info("OnMouseRelease button: {}", crylib::enum_to_string(event.button));
 }
+
+void Mouse::on_mouse_move(MouseMoveEvent event) {
+    Logger::Info("OnMouseMove Location: X:{} Y:{}", event.X, event.Y);
+}
