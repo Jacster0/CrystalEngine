@@ -19,6 +19,7 @@ namespace crystal {
     class platform {
     public:
         void create_main_window(application_create_info createInfo);
+        static std::string_view get_extensions_name();
         std::optional<int> process_messages();
     private:
         Keyboard m_kbd;

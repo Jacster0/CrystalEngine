@@ -439,4 +439,8 @@ void platform::on_mouse_move(xcb_generic_event_t *event) noexcept {
     EventSystem::notify<MouseMoveEvent>(static_cast<uint32_t>(mouseEvent->event_x), static_cast<uint32_t>(mouseEvent->event_y));
 }
 
+std::string_view platform::get_extensions_name() {
+    return "VK_KHR_xcb_surface";
+}
+
 
