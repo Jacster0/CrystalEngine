@@ -18,19 +18,27 @@ void RHICore::createInstance() {
     appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
     appInfo.apiVersion = VK_API_VERSION_1_0;
 
-    auto extensionName = platform::get_extensions_name().data();
+    constexpr std::array requiredExtensions {
+        "VK_KHR_surface", platform::get_extensions_name().data()
+    };
 
     VkInstanceCreateInfo createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     createInfo.pApplicationInfo = &appInfo;
-    createInfo.enabledExtensionCount = 1;
-    createInfo.ppEnabledExtensionNames = &extensionName;
+    createInfo.enabledExtensionCount = requiredExtensions.size();
+    createInfo.ppEnabledExtensionNames = requiredExtensions.data();
     createInfo.enabledLayerCount = 0;
 
+    const std::vector<const char*> validationLayers = {
+            "VK_LAYER_KHRONOS_validation"
+    };
+
     if constexpr (validationLayers::enableValidationLayers()) {
-        auto validationLayerNames = validationLayers::getValidationLayers();
+        constexpr auto validationLayerNames = validationLayers::getValidationLayers();
+        constexpr auto pName = validationLayerNames.front();
+
         createInfo.enabledLayerCount = validationLayerNames.size();
-        createInfo.ppEnabledLayerNames = validationLayerNames.data();
+        createInfo.ppEnabledLayerNames = &pName;
     }
     else {
         createInfo.enabledLayerCount = 0;

@@ -1,6 +1,8 @@
 #pragma once
 
 namespace crystal::validationLayers {
+    constexpr std::array validationLayerNames = { "VK_LAYER_KHRONOS_validation"};
+
     constexpr auto enableValidationLayers() noexcept {
 #ifdef NDEBUG
         return false;
@@ -8,6 +10,9 @@ namespace crystal::validationLayers {
         return true;
 #endif
     }
+
     bool checkSupport() noexcept;
-    std::vector<const char*> getValidationLayers() noexcept;
+    constexpr auto getValidationLayers() noexcept {
+        return validationLayerNames;
+    }
 }

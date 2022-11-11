@@ -1,12 +1,11 @@
 #include <cstdint>
 #include <vector>
+#include <array>
 #include <string_view>
 #include "ValidationLayers.h"
 #include "vulkan/vulkan.h"
 
 using namespace crystal;
-
-const std::vector validationLayerNames = { "VK_LAYER_KHRONOS_validation" };
 
 bool validationLayers::checkSupport() noexcept {
     uint32_t layerCount;
@@ -30,8 +29,4 @@ bool validationLayers::checkSupport() noexcept {
         }
     }
     return true;
-}
-
-std::vector<const char*> validationLayers::getValidationLayers() noexcept {
-    return validationLayerNames;
 }
