@@ -5,14 +5,12 @@
 namespace crystal {
     class RHICore {
     public:
-        void initialize() {
-            createInstance();
-        }
-        void cleanUp() {
-            vkDestroyInstance(instance, nullptr);
-        }
+        void initialize();
+        void cleanUp();
     private:
         void createInstance();
-        VkInstance instance;
+
+        VkInstance m_instance;
+        VkDebugUtilsMessengerEXT m_debugMessenger;
     };
 }
