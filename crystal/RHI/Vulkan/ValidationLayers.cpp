@@ -5,6 +5,7 @@
 #include "ValidationLayers.h"
 #include "vulkan/vulkan.h"
 #include "core/logging/Logger.h"
+#include <stdexcept>
 
 using namespace crystal;
 
